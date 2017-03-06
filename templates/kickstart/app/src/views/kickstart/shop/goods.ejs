@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://img1.mo.com/s/common/layer.css"/>
+    <script src="http://img1.mo.com/jquery.js,product/layer.js"></script>
+    <script src="http://img1.mo.com/static/global/auth.js"></script>
+</head>
+<body>
+    <div id="J_LoginStatus" style="border-bottom:  1px dashed gray;"></div>
+    <h1>产品列表</h1>
+    <ul>
+        <li>
+            <span>Kepma41寸初学入门民谣木吉他</span> <a href="comment/231">【评 论】</a> <a id="getCoupon" href="#">【获得优惠券】</a>
+        </li>
+        <li>
+            <span>YAMAHA雅马哈FG800原木色单板民谣木吉他</span> <a href="comment/232">【评 论】</a>
+        </li>
+    </ul>
+
+    <script type="text/javascript">
+        $(function() {
+            var logoutUrl = '<%=ctx.bootjs.config.auth.logoutUrl%>';
+            var loginUrl = '<%=ctx.bootjs.config.auth.loginUrl%>';
+            
+            function trim(str) {
+                return String(str).replace(/(^\s+|\s+$)/, '');
+            }
+            
+            function getUserName() {
+                var list = document.cookie.split(';');
+                var username;
+                for(var i = list.length - 1; i >= 0; i--) {
+                    var item = list[i].split('=');
+                    if (trim(item[0]) === 'mouser_name') {
+                        username = item[1];
+                        break;
+                    }
+                }
+                function base64Decode(input){
+                    rv = window.atob(input);
+                    rv = escape(rv);
+                    rv = decodeURIComponent(rv);
+                    return rv;
+                }
+                return base64Decode(username);
+            }
+            
+            function render(status) {
+                var html = [];
+                html.push('Welcome to eCommerce.');
+                if (status) {
+                    html.push('[<span style="color:green">', getUserName(), '</span>]');
+                    html.push('<a href="', logoutUrl , '">【离 开】</a>')
+                } else {
+                    html.push('[<span style="color:green">未登录</span>]');
+                    html.push('<a href="', loginUrl , '">【登 录】</a>')
+                }
+                
+                $('#J_LoginStatus').html(html.join(''));
+            }
+            
+            render(auth.getLoginStatus().logged);
+            auth.on(function(status) {
+                render(auth.getLoginStatus().logged);
+            });
+            $('#getCoupon').click(function() {
+                auth.login(function() {
+                    alert('您领取了价值100元的旅游券.')
+                }, 
+                {
+                    iframeUrl: function() {
+                        var full_domain = location.protocol + '//' + location.host;
+                        var originUrl = 'http://www.mo.com/ssoConnect/Iframe?reload=node&full_domain=' + full_domain;
+                        return 'https://passport.mo.com/login/iframe?origin=' + encodeURIComponent(originUrl);
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "bootjs-cli",
+  "version": "0.1.0",
+  "description": "bootjs CLI Tools.",
+  "main": "bin/bootjs-cli.js",
+  "preferGlobal": true,
+  "bin": {
+    "bootjs-cli": "./bin/bootjs-cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Command Tool",
+    "Create Project"
+  ],
+  "author": {
+    "name": "Allen Guo",
+    "email": "<guojunlong@kaulware.com>"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "mkdirp": "^0.5.1",
+    "readline": "^1.3.0",
+    "recursive-copy": "^2.0.5"
+  }
+}

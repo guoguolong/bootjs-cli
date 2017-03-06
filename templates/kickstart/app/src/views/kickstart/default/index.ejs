@@ -1,0 +1,187 @@
+<div style="padding:20px;padding-top:0px;min-height:100%;" class="bg-light">
+    <h1><%=title%></h1>
+    <h3>官网: <a href="https://github.com/guoguolong/bootjs">https://github.com/guoguolong/bootjs</a></h3>
+    <fieldset>
+        <legend>路由基础规则</legend>
+        <div>
+            <ul>
+                <li><a href="/">自动映射的默认路由</a></li>
+                <li><a href="/kickstart_product/list">三级路由：配置文件指定路由-&gt;代码文件指定路由-&gt;自动映射路由.</a></li>
+                <li>
+                    <a href="/kickstart_order_cart/list">更深目录路由</a>
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>路由失败处理</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_products/list">找不到控制器Controller文件 404［开发模式下错误应显示到页面］</a></li>
+                <li><a href="/kickstart_product/buy">找不到控制器Controller的Action方法 404［开发模式下错误应显示到页面］</a></li>
+                <li><a href="/kickstart_product/view/23/MP4">找不到视图View文件,error中间件捕获了异常进入500页面［开发模式下错误应显示到页面］</a></li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>获取路由参数（Action方法里）</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_product/edit/84/苹果电脑">自动映射路由获取路由参数</a></li>
+                <li><a href="/kickstart/goods/edit/199/电子计算机">配置、代码文件带命名参数路由</a></li>
+                <li><a href="/kickstart/travel/324">命名参数 ＋ 正则表达式(匹配数字) -  /kickstart/travel/:productId(\\d+)</a></li>
+                <li><a href="/kickstart/travel/nj">命名参数 ＋ 正则表达式(匹配字母) - /kickstart/travel/:cityLetter(\\w{0,2})</a></li>
+                <li>
+                    <a href="/kickstart/tour/324">无命名参数 ＋ 正则表达式(匹配数字) - new RegExp('/kickstart/tour/(\\d+)')</a>  <span class="footer">此处不用RegExp是无法通过 req.params[0]获取到()内的匹配参数的</span>
+                </li>
+                <li>
+                    <a href="/kickstart/tour/nj">无命名参数 ＋ 正则表达式(匹配字母) - new RegExp('/kickstart/tour/([^\\d]{2})$')</a>
+                    <span class="footer">此处不用RegExp是无法通过 req.params[0]获取到()内的匹配参数的</span>
+                </li>
+                <li>
+                    <a href="/kickstart/music/Califonia">获取配置路由固定参数.</a>
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>HTML渲染（htmlRender: 扁平参数|HtmlResponse类参数风格）</legend>
+        <div>
+            <ul>
+                <li>不使用布局
+                    <ul style="padding-left: 20px;">
+                        <li>
+                            <a href="/kickstart_htmlRespFlat/noLayoutNoData">不传递数据，默认模板文件</a> |
+                            <a href="/kickstart_htmlRespClass/noLayoutNoData">HtmlResponse类参数风格</a>
+                        </li>
+                        <li>
+                            <a href="/kickstart_htmlRespFlat/noLayoutWithData">传递数据、默认模板文件</a> |
+                            <a href="/kickstart_htmlRespClass/noLayoutWithData">HtmlResponse类参数风格</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>默认布局
+                    <ul style="padding-left: 20px;">
+                        <li>
+                            <a href="/kickstart_htmlRespFlat/layoutNoArgs">无参数（不传递数据、默认模板文件）</a>
+                        </li>
+                        <li>
+                            <a href="/kickstart_htmlRespFlat/layoutDefault">传递数据、默认模板文件</a> | 
+                            <a href="/kickstart_htmlRespClass/layoutDefault">HtmlResponse类参数风格</a>
+                            <span class="footer">这个才是你最常用的模式!</span>
+                        </li>
+                        <li>
+                            <a href="/kickstart_htmlRespFlat/changeViewPath">传递数据、定制模板文件</a> | 
+                            <a href="/kickstart_htmlRespClass/changeViewPath">HtmlResponse类参数风格</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>定制布局
+                    <ul style="padding-left: 20px;">
+                        <li>
+                            <a href="/kickstart_htmlRespFlat/changeLayout">传递数据、默认模板文件</a> | 
+                            <a href="/kickstart_htmlRespClass/changeLayout">HtmlResponse类参数风格</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li><a href="/kickstart_htmlRespFlat/renderStyle">res.render()参数风格的渲染</a></li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>页面跳转</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_default/redirect">Rediect: URL改变(同Rewrite)，转向其他Controller/Action</a></li>
+                <li><a href="/kickstart_default/forward/ab/cd">Forward: URL不变，转向其他Controller/Action</a></li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>定制校验</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_customizeValidator/validate/not_integer">使用@validator的扩展</a></li>
+                <li><a href="/kickstart_customizeValidator/req_validate?total=4">使用@express-validator的扩展</a></li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Generator风格的Action方法</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_generator">异步获取远程XML数据.</a></li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Session处理</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_session/write/hello,session">写一个数据到Session(Redis)</a></li>
+                <li><a href="/kickstart_session/read">从Session读数据</a></li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Log输出</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_logger/output">写日志</a></li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>大型应用模块划分</legend>
+        <div>
+            <ul>
+                <li><a href="http://super.mo.me"><span class="footer">二级域名《＝》URL分组 仅在autoUrlPrefix=false模式下支持</span></a> (super.mo.me)</li>
+                <li><a href="http://deluxe.mo.me">二级域名《＝》bundles: </a>（deluxe.mo.me -> bootjs.mo.me/deluxe）</a></li>
+                <li><a href="/panel">第三方bundle例，密码：lifeissimple</a></li>
+            </ul>
+        </div>
+    </fieldset>    
+
+    <fieldset>
+        <legend>配置文件</legend>
+        <div>
+            <ul>
+                <li>
+                    <a href="/kickstart_config">输出config配置，理解params节点.</a>
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Web API</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_api_article/list">API返回规范</a></li>
+                <li><a href="/kickstart_api_article/bad">API返回异常处理</a></li>
+                <li><a href="/kickstart_api_article/get_list">Action方法驼峰转换后路由映射</a></li>
+                <!-- <li><a href="/api">书写API文档</a></li> -->
+            </ul>
+        </div>
+    </fieldset>    
+
+    <fieldset>
+        <legend>一个还不太完整的CRUD</legend>
+        <div>
+            <ul>
+                <li><a href="/kickstart_book/search">图书管理系统</a>
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+</div>

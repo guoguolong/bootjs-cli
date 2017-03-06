@@ -1,0 +1,11 @@
+<h1>DELUXE INDEX PAGE - Order No: <%=order.name%>.</h1>
+<ul>
+    <% if (ctx.bootjs.config.router.autoUrlPrefix) { %>
+    <li><a href="/index/index2">定制模板文件.</a></li>
+    <li><a href="/customer_address/list">二级目录查找.</a></li>
+    <% } else { %>
+    <li><a href="/index/index2">定制模板文件.</a></li>
+    <li><a href="/customer/address/list">二级目录查找.</a></li>
+    <li><a href="/order/cart">二级目录查找(手工URL前缀模式)</a></li>
+    <% } %>
+</ul>

@@ -1,0 +1,21 @@
+{
+  "name": "kickstart",
+  "version": "0.1.0",
+  "description": "minimal project based on bootjs ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "guojunlong",
+  "license": "MIT",
+  "scripts": {
+    "local.start": "NODE_ENV=local pm2 start app.js --name=kickstart --watch=./ --ignore-watch=\"node_modules\"",
+    "win.start": "SET pm2 start app.js --name=kickstart --watch=./ --ignore-watch=\"node_modules\"",
+    "restart": "pm2 restart app.js",
+    "status": "pm2 logs kickstart"
+  },
+  "dependencies": {
+    "bootjs": "^0.1.4",
+    "express": "^4.14.1"
+  }
+}

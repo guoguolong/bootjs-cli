@@ -1,0 +1,2 @@
+hosts:
+    TOUR_API: 'http://debug-api.kw.org'

@@ -1,0 +1,48 @@
+<html>
+<link rel="stylesheet" type="text/css" href="/kickstart/css/style.css">
+<body style="background: white;">
+    <h1><%=title%></h1>
+    <a href="/kickstart/book/search">图书列表</a>
+    <% if(book.id) { %><a href="/kickstart/book/add">新增图书</a><% } %>
+    <br/>
+    <% if (typeof validation !== 'undefined') { %>
+    <div class="error">
+        <ul>
+        <% Object.keys(validation).forEach(function(key) { %>
+            <li>
+                <span><%=key%></span>
+                <ul>
+                    <%validation[key].forEach(function(msg){%>
+                        <li><%=msg%></li>
+                    <%})%>
+                </ul>
+            </li>
+        <%}) %>
+        </ul>
+    </div>
+    <% } %>
+    <form action="/kickstart/book/save/<%=book.id%>" method="post">
+        <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+        <div class="row">
+            <label for="name">图书名</label><input type="text" id="name"  name="name" value="<%=book.name%>"/>
+        </div>
+        <div class="row">
+            <label for="price">价格</label><input type="text" id="price"  name="price" value="<%=book.price%>"/>
+        </div>
+        <div class="row">
+            <label for="author">作者</label><input type="text" id="author"  name="author" value="<%=book.author%>"/>
+        </div>
+        <div class="row">
+            <label for="email">EMAIL</label><input type="text" id="price"  name="email" value="<%=book.email%>"/>
+        </div>
+        <div class="row">
+            <label for="isPromotion">促销吗</label>
+            <input type="checkbox" id="isPromotion"  name="isPromotion" value="true" <% if (book.isPromotion) { %>checked="checked"<% } %>/>
+        </div>
+        <div class="row">
+            <input type="submit" name="save" value="存 储" />
+        </div>
+    </form>
+    <script type="text/javascript" src="/kickstart/js/jquery-2.0.0.min.js"></script>
+</body>
+</html>

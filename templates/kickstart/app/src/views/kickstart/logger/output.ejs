@@ -1,0 +1,10 @@
+在Controller/Action方法中，执行了：
+<pre>
+    this.ctx.logger.trace('Entering cheese testing');
+    this.ctx.logger.debug('Got cheese.');
+    this.ctx.logger.info('Cheese is Gouda.');
+    this.ctx.logger.warn('Cheese is quite smelly.');
+    this.ctx.logger.error('Cheese is too ripe!');
+    this.ctx.logger.fatal('Cheese was breeding ground for listeria.');
+</pre>
+打开config/config.log4js.js看看log记录到哪里了？对于开发环境，直接定向到console.

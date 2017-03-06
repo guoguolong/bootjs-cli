@@ -1,0 +1,7 @@
+<link rel="stylesheet" type="text/css" href="/kickstart/css/style.css">
+<h1>[Cart]-Product list</h1>
+<ul>
+    <% products.forEach(function(item) { %>
+    <li><%=item.id%> : <a href="/kickstart/order/cart/detail/<%=item.id%>"><%=item.name%></a><br/></li>
+    <% }) %>
+</ul>

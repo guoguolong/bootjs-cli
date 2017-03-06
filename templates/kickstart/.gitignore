@@ -1,0 +1,6 @@
+var/logs/*
+!var/logs/.gitkeep
+app/modules/*
+!app/.gitkeep
+**/.DS_Store
+node_modules

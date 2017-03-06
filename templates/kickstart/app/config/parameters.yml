@@ -1,0 +1,3 @@
+remote:
+    baseUrls:
+      INTERNAL_API: 'http://public-api.kw.org'

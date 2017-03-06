@@ -1,0 +1,71 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/kickstart/css/style.css">
+</head>
+<body style="background: white;">
+    <div>
+        <h1>图书列表</h1>
+        <a href="/kickstart/book/add">新增图书</a>
+        <div id="msgBox">
+            <% if (flash && flash.messages) { %>
+            <div class="flash <%=flash.type%>"><% flash.messages.forEach(function(message) { %><%=message%><br/><%}) %></div>
+            <% } %>
+        </div>
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名字</th>
+                    <th>价格</th>
+                    <th>作者</th>
+                    <th>促销吗</th>
+                    <th>EMAIL</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <% books.forEach(function(item) { %>
+                <tr>
+                    <td><%=item.id%></td>
+                    <td><%-item.name%></td>
+                    <td>¥ <%=item.price%></td>
+                    <td><%=item.author%></td>
+                    <td><% if (item.isPromotion) { %>是<% } else { %>否<% } %></td>
+                    <td><%=item.email%></td>
+                    <td>
+                        <a href="/kickstart/book/edit/<%=item.id%>">编 辑</a>
+                        <a class="btn-remove" href="#" data-url="/kickstart/api/book/remove/<%=item.id%>">删 除</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+        <div class="pageBar">
+            共 <%=page.pages%> 页 | 当前第<%=page.pageNo%>页 | <%=page.pageSize%>条/页 | 
+            <a href="/kickstart/book/search?pageNo=1">上一页</a> 
+            <a href="/kickstart/book/search?pageNo=2">下一页</a> 
+        </div>
+    </div>
+    <script type="text/javascript" src="/kickstart/js/jquery-2.0.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#msgBox .flash').fadeOut(3000);
+        });     
+        
+        $('.btn-remove').on('click' , function(){
+              $.get($(this).data('url'), function(resp){
+                    var cssClass = 'success';
+                    if (resp.code != 0) {
+                        cssClass = 'error'
+                    }
+                    var message = '<div class="flash '+ cssClass +'">';
+                    message += resp.message;
+                    message += '</div>';
+                    $('#msgBox').html(message);
+                    if (resp.code == 0) {
+                        $('#msgBox .flash').fadeOut(3000);
+                        setTimeout(function(){ window.location.reload(); }, 500);
+                    }
+              });
+        })
+    </script>
+</body>
+</html>
