@@ -1,6 +1,8 @@
-# A command line tool for bootjs [MIT](LICENSE)
+# A command line tool for bootjs 
+[MIT](LICENSE)
 
 ## Global installation
+
 > cnpm i bootjs-cli -g
 
 ## Create a template project 
