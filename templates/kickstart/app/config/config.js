@@ -1,8 +1,8 @@
 'use strict';
 
-var appBaseDir = __dirname + '/../';
-var config = {
-    appName: 'kickstart',
+let appBaseDir = __dirname + '/../';
+module.exports = {
+    appName: '{project_name}',
     debugMode: true,
     serverPort: 5000,
     appBaseDir: appBaseDir,
@@ -14,15 +14,12 @@ var config = {
     session: {
         store: {
             redis: {
-                host: "127.0.0.1",
-                port: 6379,
-                no_ready_check: true,
-                retry_strategy: function (times) {
-                    return Math.min(50, 2000);
-                }
+                host: "localhost",
+                port: 6379
             }
         }
     },
-    httpTimeout: 10 * 1000
+    cookies: {
+        secretKey: 'lifeissimpebutyoumadeitcomplicated'
+    }
 };
-module.exports = config;

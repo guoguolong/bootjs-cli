@@ -1,4 +1,5 @@
 'use strict';
+
 var appBaseDir = __dirname + '/../';
 module.exports = {
     plugins : {

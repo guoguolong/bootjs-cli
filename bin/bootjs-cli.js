@@ -7,7 +7,7 @@ let program = require('commander');
 let mkdirp = require('mkdirp');
 let readline = require('readline');
 let pkg = require('../package.json');
-
+let projInfo = {};
 program
     .version(pkg.version);
 
@@ -18,10 +18,20 @@ program
     .description('create a new project')
     .action(function(project_name, options) {
         if (!project_name) return;
-        if (!options.dir) {
-            options.dir = path.join(process.cwd(), project_name);
+        project_name = project_name.toLowerCase();
+        let proArr = project_name.split(':');
+        if (proArr[1]) {
+            projInfo.subSystem = proArr[0];
+            projInfo.projectName = proArr[1];
+        } else {
+            projInfo.subSystem = 'sub';
+            projInfo.projectName = proArr[0];
         }
-        init(project_name, options);
+
+        if (!options.dir) {
+            options.dir = path.join(process.cwd(), projInfo.projectName);
+        }
+        init(projInfo.projectName, options);
     });
 
 program.on('--help', function() {
@@ -29,6 +39,7 @@ program.on('--help', function() {
     console.log();
     console.log('    $ bootjs-cli init kickstart # 创建一个带有quickstart的项目');
     console.log('    $ bootjs-cli init --template=compact quickstart # 创建一个干净的项目');
+    console.log('    $ bootjs-cli init --template=compact sub:mars # 创建一个模块名为sub、项目名为mars的项目');
     console.log('    $ bootjs-cli init --template=mini quickstart # 创建一个最小化的项目');
     console.log('    $ bootjs-cli init --dir=/proj/kickstart kickstart # 指定目录创建项目');
     console.log();
@@ -69,6 +80,25 @@ function confirm(msg, callback) {
     });
 }
 
+function _replacePlaceholders(files, target) {
+    target = target || {};
+    files.forEach(function(filePath) {
+        if(!fs.existsSync(filePath)) return;
+
+        let text = fs.readFileSync(filePath, 'utf8');
+
+        target.projectName = target.projectName || 'PRO'
+        text = text.replace(/\{project_name\}/g, target.projectName);
+        text = text.replace(/\{PROJECT_NAME\}/g, target.projectName.toUpperCase());
+
+        target.subSystem = target.subSystem || 'SUB';
+        text = text.replace(/\{sub_system\}/g, target.subSystem);
+        text = text.replace(/\{SUB_SYSTEM\}/g, target.subSystem.toUpperCase());
+
+        fs.writeFileSync(filePath, text);
+    });
+}
+
 function _init(project_name, options, templatesName) {
     let copy = require('recursive-copy');
     templatesName = templatesName || 'kickstart';
@@ -81,26 +111,17 @@ function _init(project_name, options, templatesName) {
         if (error) {
             console.error('Copy failed: ' + error);
         } else {
-            console.info('1 Copied ' + results.length + ' files');
-            let out = null;
+            console.info('Step 1: Copied ' + results.length + ' files.');
             // template替换.
-            let configJs = options.dir + "/app/config/config.js";
-            if (fs.existsSync(configJs)) {
-                let src = fs.readFileSync(configJs, 'utf8');
-                out = src.replace(/kickstart/g, project_name);
-                fs.writeFileSync(configJs, out);
-            }
-            let pkgJson = options.dir + "/package.json";
-            src = fs.readFileSync(pkgJson, 'utf8');
-            out = src.replace(/kickstart/g, project_name);
-            fs.writeFileSync(pkgJson, out);
-
-            console.info('2 Compiled tempate files.');
-
-            console.info('3 Starting "npm install"');
-            // 执行npm更新包 
+            _replacePlaceholders([
+                options.dir + '/app/config/config.js',
+                options.dir + '/package.json',
+            ], projInfo );
+            console.info('Step 2: Compiled template files.');
+            console.info('Step 3: Starting "cnpm install"');
+            // 执行cnpm更新包 
             let child_process = require('child_process');
-            let cmd = 'cd ' + options.dir + ' && npm install ';
+            let cmd = 'cd ' + options.dir + ' && cnpm install ';
             let working = child_process.exec(cmd, function(err, stdout, stderr) {
                 if (err) throw err;
                 console.info('Module dependencies installed.');
@@ -128,17 +149,4 @@ function hookCompleted(project_name, options) {
     console.log(' to start node on port 5000');
     console.log();
     console.log('**************************************************');
-}
-
-// @TODO: 暂未使用，稍候删除.
-function travel(dir, callback) {
-    fs.readdirSync(dir).forEach(function (file) {
-        var pathname = path.join(dir, file);
-
-        if (fs.statSync(pathname).isDirectory()) {
-          travel(pathname, callback);
-        } else {
-          callback(pathname, file);
-        }
-    });
 }

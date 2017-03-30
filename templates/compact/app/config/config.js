@@ -1,8 +1,8 @@
 'use strict';
 
-var appBaseDir = __dirname + '/../';
-var config = {
-    appName: 'qq',
+let appBaseDir = __dirname + '/../';
+module.exports = {
+    appName: '{project_name}',
     debugMode: true,
     serverPort: 5000,
     appBaseDir: appBaseDir,
@@ -23,6 +23,7 @@ var config = {
             }
         }
     },
-    httpTimeout: 10 * 1000
+    cookies: {
+        secretKey: 'lifeissimpebutyoumadeitcomplicated'
+    }
 };
-module.exports = config;
