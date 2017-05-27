@@ -1,14 +1,21 @@
 'use strict';
 
 const path = require('path');
-module.exports = {
-    morgan: {
-        format: ':datetime :beautful-ip :method :url :status responseTimeFN=:response-time ms',
-        rotator: {
-            date_format: 'YYYYMMDD',
-            filename: path.resolve(__dirname, '../../var/logs/access-%DATE%.log'),
-            frequency: 'daily',
-            verbose: false
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+module.exports = function(config) {
+    let filename = path.resolve(__dirname, '../../var/logs/access.log');
+    let folder = path.parse(filename).dir;
+    if (!fs.existsSync(folder)) {
+        mkdirp(folder);
+    }
+    return {
+        morgan: {
+            format: ':x-forwarded-for - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":http_host" :response-time "-" "-" ":x-request-id" ":remote-addr"',
+            rotator: {
+                filename: filename,
+                verbose: false
+            }
         }
     }
-};
+}

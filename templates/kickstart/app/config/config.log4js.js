@@ -6,7 +6,7 @@ module.exports = {
         appenders: [
             {
                 type: 'file',
-                filename: path.resolve(__dirname, '../../var/logs/app.log');
+                filename: path.resolve(__dirname, '../../var/logs/app.log'),
                 maxLogSize: 20480,
                 backups: 3,
                 category: 'app',

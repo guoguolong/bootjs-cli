@@ -14,7 +14,7 @@ module.exports = function(config) {
             appenders: [
                 {
                     type: 'file',
-                    filename: filename
+                    filename: filename,
                     maxLogSize: 20480,
                     backups: 3,
                     category: 'app',

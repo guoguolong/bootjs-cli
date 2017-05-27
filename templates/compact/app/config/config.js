@@ -3,6 +3,7 @@
 let appBaseDir = __dirname + '/../';
 module.exports = {
     appName: '{project_name}',
+    appId: '{project_name}',
     debugMode: true,
     serverPort: 5000,
     appBaseDir: appBaseDir,
@@ -15,11 +16,7 @@ module.exports = {
         store: {
             redis: {
                 host: "localhost",
-                port: 6379,
-                no_ready_check: true,
-                retry_strategy: function (times) {
-                    return Math.min(50, 2000);
-                }
+                port: 6379
             }
         }
     },

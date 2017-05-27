@@ -3,6 +3,7 @@
 let appBaseDir = __dirname + '/../';
 module.exports = {
     appName: '{project_name}',
+    appId: '{project_name}',
     debugMode: true,
     serverPort: 5000,
     appBaseDir: appBaseDir,

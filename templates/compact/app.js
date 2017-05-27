@@ -1,9 +1,9 @@
 'use strict';
+
 const os = require('os');
 const bootstrap = require('./_app.js');
 const config = bootstrap.getAppConfig();
 const app = bootstrap.createApplication();
-config.easyMonitor && config.easyMonitor.needStart && require('easy-monitor')(config.easyMonitor);
 
 // 启动服务器
 let logo = '\n';

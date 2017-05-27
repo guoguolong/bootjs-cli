@@ -11,7 +11,7 @@ module.exports = function(config) {
     }
     return {
         morgan: {
-            format: ':datetime :beautful-ip :method :url :status responseTimeFN=:response-time ms',
+            format: ':x-forwarded-for - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":http_host" :response-time "-" "-" ":x-request-id" ":remote-addr"',
             rotator: {
                 filename: filename,
                 verbose: false

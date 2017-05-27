@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 'use strict';
-let fs = require('fs');
-let path = require('path');
-let program = require('commander');
-let mkdirp = require('mkdirp');
-let readline = require('readline');
-let pkg = require('../package.json');
+const fs = require('fs');
+const path = require('path');
+const program = require('commander');
+const mkdirp = require('mkdirp');
+const readline = require('readline');
+const pkg = require('../package.json');
+const artFont = require('../lib/ArtFont.js');
+
 let projInfo = {};
 program
     .version(pkg.version);
@@ -39,7 +41,7 @@ program.on('--help', function() {
     console.log();
     console.log('    $ bootjs-cli init kickstart # 创建一个带有quickstart的项目');
     console.log('    $ bootjs-cli init --template=compact quickstart # 创建一个干净的项目');
-    console.log('    $ bootjs-cli init --template=compact sub:mars # 创建一个模块名为sub、项目名为mars的项目');
+    console.log('    $ bootjs-cli init --template=compact mgr:planet # 创建一个类别名为mgr、项目名为planet的项目');
     console.log('    $ bootjs-cli init --template=mini quickstart # 创建一个最小化的项目');
     console.log('    $ bootjs-cli init --dir=/proj/kickstart kickstart # 指定目录创建项目');
     console.log();
@@ -56,16 +58,11 @@ function init(project_name, options) {
         console.info('目标目录: ' + options.dir + ' 已经存在, 请换一个再试.');
         process.exit(1);
     }
-    confirm('即将创建项目到:' + options.dir + ', 确定继续吗? [y/n](回车退出)', function(yes) {
-        if (yes) {
-            process.stdin.destroy();
-            mkdirp(options.dir, function() {
-                let tmpName = options.template || 'kickstart';
-                _init(project_name, options, tmpName);
-            });
-        } else {
-            process.exit(1);
-        }
+    console.log('即将创建项目到' + options.dir);
+    process.stdin.destroy();
+    mkdirp(options.dir, function() {
+        let tmpName = options.template || 'kickstart';
+        _init(project_name, options, tmpName);
     });
 }
 
@@ -94,6 +91,7 @@ function _replacePlaceholders(files, target) {
         target.subSystem = target.subSystem || 'SUB';
         text = text.replace(/\{sub_system\}/g, target.subSystem);
         text = text.replace(/\{SUB_SYSTEM\}/g, target.subSystem.toUpperCase());
+        text = text.replace(/\{project_name_art\}/g, target.projectNameArt);
 
         fs.writeFileSync(filePath, text);
     });
@@ -107,35 +105,46 @@ function _init(project_name, options, templatesName) {
         console.error('指定的模板【'+ templatesName +'】不存在');
         process.exit(1);
     }
-    copy(src, options.dir, function(error, results) {
-        if (error) {
-            console.error('Copy failed: ' + error);
-        } else {
+    copy(src, options.dir, {dot: true})
+        .then(function(results) {
+            createGitignoreFile(options.dir);
             console.info('Step 1: Copied ' + results.length + ' files.');
             // template替换.
+            projInfo.projectNameArt = artFont.genWords(projInfo.projectName).join('@');
+            projInfo.projectNameArt = projInfo.projectNameArt
+                .replace(/'/, '\\\'')
+                .replace(/\\/g, '\\\\')
+                .replace(/@/g, '\\n');
+
             _replacePlaceholders([
                 options.dir + '/app/config/config.js',
+                options.dir + '/app/src/controllers/IndexController.js',
                 options.dir + '/package.json',
-            ], projInfo );
+                options.dir + '/app.js',
+            ], projInfo);
+
             console.info('Step 2: Compiled template files.');
-            console.info('Step 3: Starting "cnpm install"');
-            // 执行cnpm更新包 
+
+            console.info('Step 3: Starting "npm install"');
+            // 执行npm更新包 
             let child_process = require('child_process');
-            let cmd = 'cd ' + options.dir + ' && cnpm install ';
+            let cmd = 'cd ' + options.dir + ' && npm install ';
             let working = child_process.exec(cmd, function(err, stdout, stderr) {
                 if (err) throw err;
                 console.info('Module dependencies installed.');
                 hookCompleted(project_name, options);
             });
-            working.stdout.on('data', function (data) {
+            working.stdout.on('data', function(data) {
                 console.log(data);
             });
 
-            working.stderr.on('data', function (data) {
+            working.stderr.on('data', function(data) {
                 console.error(data);
             });
-        }
-    });
+        })
+        .catch(function(error) {
+            console.error('Copy failed: ' + error);
+        });
 }
 
 function hookCompleted(project_name, options) {
@@ -149,4 +158,16 @@ function hookCompleted(project_name, options) {
     console.log(' to start node on port 5000');
     console.log();
     console.log('**************************************************');
+}
+
+function createGitignoreFile(targetDir) {
+    let items = [
+        'var/logs/*',
+        '!var/logs/.gitkeep',
+        'app/modules/*',
+        '!app/.gitkeep',
+        '**/.DS_Store',
+        'node_modules    ',
+    ];
+    fs.writeFileSync(path.join(targetDir, '.gitignore'), items.join('\n'));
 }

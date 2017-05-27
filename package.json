@@ -1,6 +1,6 @@
 {
   "name": "bootjs-cli",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "bootjs CLI Tools.",
   "main": "bin/bootjs-cli.js",
   "preferGlobal": true,
