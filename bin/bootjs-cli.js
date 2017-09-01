@@ -86,6 +86,7 @@ function _replacePlaceholders(files, target) {
 
         target.projectName = target.projectName || 'PRO'
         text = text.replace(/\{project_name\}/g, target.projectName);
+        text = text.replace(/__project_name__/g, target.projectName);
         text = text.replace(/\{PROJECT_NAME\}/g, target.projectName.toUpperCase());
 
         target.subSystem = target.subSystem || 'SUB';

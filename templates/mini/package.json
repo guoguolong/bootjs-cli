@@ -4,18 +4,15 @@
   "description": "minimal project based on bootjs ",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "guojunlong",
-  "license": "MIT",
-  "scripts": {
     "local.start": "NODE_ENV=local pm2 start app.js --name=kickstart --watch=./ --ignore-watch=\"node_modules\"",
     "win.start": "SET pm2 start app.js --name=kickstart --watch=./ --ignore-watch=\"node_modules\"",
     "restart": "pm2 restart app.js",
     "status": "pm2 logs kickstart"
   },
+  "author": "guojunlong",
+  "license": "MIT",
   "dependencies": {
-    "bootjs": "^0.2.2",
-    "express": "^4.14.1"
+    "bootjs": "^1.0.1",
+    "express": "^4.15.4"
   }
 }
